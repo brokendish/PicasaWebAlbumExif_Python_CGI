@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Picasa WebAlbum Exif情報取得</title>
+</head>
+
+<body>
+
+<style type='text/css'>
+html,body{
+    width: 100%; height: 100%;
+    margin: 0; padding: 0;
+    background-color: #ffffff;
+}
+div{
+    margin: 0; padding: 0;
+}
+  
+#content{
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 400px; height: 300px;
+    margin-top: -100px; margin-left: -200px;
+    color: #555;
+    font-weight: 200;
+    font-size: 24px;
+    line-height: 1;
+    padding: 3px;
+    border: 10px solid #f5f5f5;
+    background: #E6E9E4;
+}
+.login { width:320px;height:40px;font-size: 24px;}
+.submit { width:120px;height:40px;font-size: 24px;}
+.tdB { width:100px;height:35px;vertical-align:bottom;font-size: 18px;color: #555;}
+.tdC { width:100px;height:40px;vertical-align:top;}
+</style>
+
+<script language="javascript" type="text/javascript">
+
+   function subm()
+   {
+      var expires = 'Tue, 1-Jan-2030 00:00:00 GMT';
+
+      document.cookie = 'ur_save' + '=' + document.getElementById("set_email").value + '; expires=' + expires;
+      document.cookie = 'pw_save' + '=' + document.getElementById("set_password").value + '; expires=' + expires;
+   }
+
+</script>
+
+
+<div id="content">
+<img src="./brokendish_iCON_Kuro.jpg" width="40" height="40"/>Picasa WebAlbum Exif情報取得
+    <form  name="form1" method="POST" action="./picasa.cgi">
+      <table align="center">
+        <tr>
+          <td class="tdB">ユーザID(Google ID)</td>
+        </tr>
+        <tr>
+          <td class="tdC">
+            <input class="login" type="email" placeholder="メールアドレス" name="emailG" id="set_email" value="" required/> 
+          </td>
+        </tr>
+　      <tr>
+          <td class="tdB">パスワード</td>
+        </tr>
+        <tr>
+          <td class="tdC">
+   　       <input class="login" type="password" placeholder="パスワード" name="passwordG" id="set_password" value="" required/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" class="tdC">
+            <input class="submit" type="submit" value="connect" name="button1" onclick=subm();><p>
+          </td>
+        </tr>
+      </table>
+    </form>
+</div>
+
+
+
+</body>
+</html>
