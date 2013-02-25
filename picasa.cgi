@@ -10,41 +10,66 @@ import datetime
 import cgi
 import os
 import Cookie
-import picasaDisp
 import picasaAlbumList
+import urllib
 
-#フォームからデータを取得
-formG = cgi.FieldStorage()
 
-#クッキーからデータを取得
-cookie = Cookie.SimpleCookie()
-cookie.load(os.environ.get('HTTP_COOKIE', ''))
-try:
-  ur = cookie["ur_save"].value
-  pw = cookie["pw_save"].value
-except:
-  ur = "1"
-  pw = "2"
+
+##クッキーからデータを取得
+#cookie = Cookie.SimpleCookie()
+#cookie.load(os.environ.get('HTTP_COOKIE', ''))
+#try:
+#  ur = cookie["ur_save"].value
+#  pw = cookie["pw_save"].value
+#except:
+#  ur = "1"
+#  pw = "2"
 
 print u"Content-type: text/html;charset=utf-8".encode('utf-8')
 
-print cookie.output()
-print
-print
+#フォームからデータを取得
+formG = cgi.FieldStorage()
+email=formG.getvalue('emailG', '')
+password=formG.getvalue('passwordG', '')
+
+ur=email
+pw=password
+
+##---------------------------------------------------
+## 古典的暗号     
+##---------------------------------------------------
+##ROT13単換字式暗号（シーザー暗号）ー暗号ーユーザ名
+ur13=ur.encode('utf8').encode('base64_codec').encode('rot_13')
+#クエリ文字列用のエンコード
+ur13=urllib.quote_plus(ur13)
+
+#cookie["ur_save"]=ur13
+##ROT13単換字式暗号（シーザー暗号）ー複合ーユーザ名
+#ur=ur13.decode('rot_13').decode('base64_codec').decode('utf8')
+##---------------------------------------------------
+##ROT13単換字式暗号（シーザー暗号）ー暗号ーパスワード
+pw13=pw.encode('utf8').encode('base64_codec').encode('rot_13')
+#クエリ文字列用のエンコード
+pw13=urllib.quote_plus(pw13)
+
+#cookie["pw_save"]=pw13
+##ROT13単換字式暗号（シーザー暗号）ー複合ーパスワード
+#pw=pw13.decode('rot_13').decode('base64_codec').decode('utf8')
+##---------------------------------------------------
 
 print """
 <html xmlns='http://www.w3.org/1999/xhtml' lang='ja'>
-<body bgcolor='#585858' text='#E6D2B1'></body>
+<body bgcolor='#EFECED' text='#5E584E'></body>
 <style type='text/css'>
 td, th { border: 1px #857464 solid; }
 table { border: 1px #555555 solid; }
-.aa{ background-color: #39303A; }
-.bb{ font-size: small;background-color: #39303A; }
-.cc{ background-color: #262625; }
+.aa{ background-color: #5A5954; color: #FFFFFF; }
+.bb{ font-size: small;background-color: #B7B4AC; }
+.cc{ background-color: #5A5954; color: #FFFFFF}
 #t_left{float: left;}
 #t_right{float: left;}
 #t_Btm{}
-a:link { color: #E6D2B1; }
+a:link { color: #4D4D4D; }
 a:visited { color: #000080; }
 a:hover { color: #E57400; }
 a:active { color: #E57400; }
@@ -54,6 +79,8 @@ a:active { color: #E57400; }
 """
 
 #print cookie.output()
+#print ur13
+#print pw13
 
 print """
 <script type="text/javascript" src="lightbox/js/prototype.js"></script>
@@ -63,36 +90,48 @@ print """
 
 <script language="javascript" type="text/javascript">
 
+  var xmlHttp;
+  var selal;
+
+  function loadText(alb){
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = checkStatus;
+    xmlHttp.open("POST", "./picasaDisp.cgi", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.send("albumname=" + alb + "&email=%s&password=%s");
+  }
+
+  function checkStatus(){
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+      document.getElementById("t_right").innerHTML = xmlHttp.responseText;
+    }
+  }
+
+
    //リンク文字列取得
    function getStr(self)
    {
       //リンクの文字列を「id=set_str」にセットする
       document.getElementById("set_albumname").value=self.firstChild.data;
-      return self.firstChild.data;
+      selal=self.firstChild.data;
    }
    //リンククリックでSubmitする
    function execute()
    {
-      document.form1.button1.click();
+      document.getElementById("t_right").innerHTML = selal + " Read Now!"
+      loadText(selal)
    }
 </script>
-"""
+""" % (ur13,pw13)
 
-
-#リンク文字列（アルバム名）を取得してリンククリックでアルバム内の情報を取得する
 print """
-<form  name="form1" method="POST" action="./picasa.cgi">
 <input type="hidden" name="albumnameG" id="set_albumname" />
 <input type="submit" value="submit" name="button1" style="visibility:hidden"><p>
 </form>
 """
 
-#print ur
-#print pw
-
 #アルバム名
 albumname = formG.getvalue("albumnameG","")
-
 
 print '<div>'
 #左側に表示
@@ -104,8 +143,7 @@ print "</div>"
 #右側に表示
 print '<div id="t_right">'
 #表示データ生成
-if albumname != "":
-   picasaDisp.PicasaDisp(ur,pw,albumname).runDisp()
+#XMLHttpRequestを使用して結果をinnerHTMLで表示
 print "</div>"
 
 #print """
