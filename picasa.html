@@ -18,7 +18,7 @@ div{
 #content{
     position: absolute;
     top: 50%; left: 50%;
-    width: 400px; height: 300px;
+    width: 400px; height: 320px;
     margin-top: -200px; margin-left: -200px;
     color: #555;
     font-weight: 200;
@@ -32,6 +32,18 @@ div{
 .submit { width:120px;height:40px;font-size: 24px;}
 .tdB { width:100px;height:35px;vertical-align:bottom;font-size: 18px;color: #555;}
 .tdC { width:100px;height:40px;vertical-align:top;}
+.aa{ background-color: #5A5954; color: #FFFFFF; }
+.bb{ font-size: small;background-color: #B7B4AC; }
+.cc{ background-color: #5A5954; color: #FFFFFF}
+.ee{ border: 0px solid;background-color: #5A5954; color: #FFFFFF}
+.ff{ border: 0px solid;background-color: #5A5954; color: #FFFFFF;font-size:200%}
+#t_left{float: left;}
+#t_right{float: left;}
+#t_Btm{}
+a:link { color: #4D4D4D; }
+a:visited { color: #000080; }
+a:hover { color: #E57400; }
+a:active { color: #E57400; }
 </style>
 
 <script language="javascript" type="text/javascript">
@@ -48,8 +60,18 @@ div{
 
 
 <div id="content">
-<img src="./brokendish_iCON_Kuro.jpg" width="40" height="40"/>Picasa WebAlbum Exif情報取得
     <form  name="form1" method="POST" action="./picasa.cgi">
+<table align="center">
+ <tr class="ee">
+   <td>
+     <a href="./picasa.html"><img src="./brokendish_iCON_Kuro.jpg" width="50" height="50"/></a>
+   </td>
+       <td class="ff"  valign=bottom>
+        Picasa WebAlbum Exif
+       </td>
+ </tr>
+</table>
+
       <table align="center">
         <tr>
           <td class="tdB">ユーザID(Google ID)</td>
@@ -76,7 +98,6 @@ div{
     </form>
 </div>
 
-
-
+<hr>
 </body>
 </html>

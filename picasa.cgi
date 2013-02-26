@@ -36,7 +36,7 @@ ur=email
 pw=password
 
 ##---------------------------------------------------
-## 古典的暗号     
+## 古典的暗号を使う（パッと見でわからなければいいので）     
 ##---------------------------------------------------
 ##ROT13単換字式暗号（シーザー暗号）ー暗号ーユーザ名
 ur13=ur.encode('utf8').encode('base64_codec').encode('rot_13')
@@ -66,6 +66,9 @@ table { border: 1px #555555 solid; }
 .aa{ background-color: #5A5954; color: #FFFFFF; }
 .bb{ font-size: small;background-color: #B7B4AC; }
 .cc{ background-color: #5A5954; color: #FFFFFF}
+.ee{ border: 0px solid;background-color: #5A5954; color: #FFFFFF}
+.ff{ border: 0px solid;background-color: #5A5954; color: #FFFFFF;font-size:250%}
+.ss{ border: 0px solid;background-color: #5A5954; color: #FFFFFF;font-size:small}
 #t_left{float: left;}
 #t_right{float: left;}
 #t_Btm{}
@@ -74,8 +77,26 @@ a:visited { color: #000080; }
 a:hover { color: #E57400; }
 a:active { color: #E57400; }
 </style>
-<h2>Picasa WebAlbum Exif情報取得</h2>
-<HR>
+"""
+print """
+<div id="t_Btm">
+<table>
+ <tr class="ee">
+   <td rowspan=2>
+     <a href="./picasa.html"><img src="./brokendish_iCON_Kuro.jpg" width="80" height="80"/></a>
+   </td>
+       <td class="ff"  valign=bottom>
+        Picasa WebAlbum Exif(写真情報取得)
+       </td>
+     <tr class="ee">
+       <td  class="ss" align=right>
+         <a href="http://brokendish.org">http://brokendish.org</a>
+       </td>
+     </tr>
+ </tr>
+</table>
+</div>
+<hr>
 """
 
 #print cookie.output()
@@ -118,7 +139,7 @@ print """
    //リンククリックでSubmitする
    function execute()
    {
-      document.getElementById("t_right").innerHTML = selal + " Read Now!"
+      document.getElementById("t_right").innerHTML = selal + " Now! Loading.."
       loadText(selal)
    }
 </script>
@@ -150,10 +171,10 @@ print "</div>"
 #<div id="t_Btm">
 #<table>
 # <tr><td>
-#  Picasa WebAlbum Exif情報取得  By brokendish.org
+#adasdasdas
 # </td></tr>
 #</table>
 #</div>
 #"""
-print '</div>'
+
 print'</html>'
