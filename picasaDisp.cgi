@@ -21,6 +21,8 @@ formG1 = cgi.FieldStorage()
 email=formG1.getvalue('email', '')
 password=formG1.getvalue('password', '')
 albumname=formG1.getvalue('albumname', '')
+dispType=formG1.getvalue('dispType')
+
 
 ##---------------------------------------------------
 ## 古典的暗号     
@@ -66,52 +68,128 @@ photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % (use
 
 print "<h2>Album -- %s</h2>" % (albumname)
 
-for photo in  photos.entry:
-  print '<table align="center">'
-  print '<tr><td><a href="%s" rel="lightbox"><img src="%s"/></a></td>' % (photo.content.src, photo.media.thumbnail[2].url)
-#  print '<tr><td><a href="%s">               <img src="%s"/></a></td>' % (photo.content.src, photo.media.thumbnail[2].url)
-  print '<td><table width="450">'
-  print '<tr><td>%s\n</td></tr>' % (photo.summary.text)
-  camera="unknown"
-  exposure="unknown"
-  flash="unknown"
-  focallength="unknown"
-  fstop="unknown"
-  iso="unknown"
-  make="unknown"
-  model="unknown"
-  time="unknown"
-  if photo.exif.make:
-    camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
-  if photo.exif.exposure:
-    exposure = '%s' % (photo.exif.exposure.text)
-  if photo.exif.flash:
-    flash = '%s' % (photo.exif.flash.text)
-  if photo.exif.focallength:
-    focallength = '%s' % (photo.exif.focallength.text)
-  if photo.exif.fstop:
-    fstop = '%s' % (photo.exif.fstop.text)
-  if photo.exif.iso:
-    iso = '%s' % (photo.exif.iso.text)
-  if photo.exif.make:
-    make = '%s' % (photo.exif.make.text)
-  if photo.exif.model:
-    model = '%s' % (photo.exif.model.text)
-  if photo.exif.time:
-    time = '%s' % datetime.date.fromtimestamp(int(photo.exif.time.text)/1000)
+if dispType == "list":
+  for photo in  photos.entry:
+    camera="unknown"
+    exposure="unknown"
+    flash="unknown"
+    focallength="unknown"
+    fstop="unknown"
+    iso="unknown"
+    make="unknown"
+    model="unknown"
+    time="unknown"
+    geo="unknown"
+    if photo.exif.make:
+      camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
+    if photo.exif.exposure:
+      exposure = '%s' % (photo.exif.exposure.text)
+    if photo.exif.flash:
+      flash = '%s' % (photo.exif.flash.text)
+    if photo.exif.focallength:
+      focallength = '%s' % (photo.exif.focallength.text)
+    if photo.exif.fstop:
+      fstop = '%s' % (photo.exif.fstop.text)
+    if photo.exif.iso:
+      iso = '%s' % (photo.exif.iso.text)
+    if photo.exif.make:
+      make = '%s' % (photo.exif.make.text)
+    if photo.exif.model:
+      model = '%s' % (photo.exif.model.text)
+    if photo.exif.time:
+      time = '%s' % datetime.date.fromtimestamp(int(photo.exif.time.text)/1000)
+    
+    shosaiStr="<table width=310>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>メーカ:</td><td class='sss'>" + make + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>モデル:</td><td class='sss'>" + model + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>ISO:</td><td class='sss'>" + iso + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>絞り:</td><td class='sss'>" + fstop + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>露出:</td><td class='sss'>" + exposure + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>レンズ焦点距離:</td><td class='sss'>" + focallength + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>フラッシュ:</td><td class='sss'>" + flash + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>日時:</td><td class='sss'>" + time + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "</table>"
+    shosaiStr=shosaiStr + "ファイル:" + photo.content.src
 
-#	  print '<tr><td class="aa">camera:<td>%s\n</td></td></tr>' % (camera)
-  print '<tr><td class="aa">メーカ(make):<td>%s\n</td></td></tr>' % (make)
-  print '<tr><td class="aa">モデル(model):<td>%s\n</td></td></tr>' % (model)
-  print '<tr><td class="aa">ISO:<td>%s\n</td></td></tr>' % (iso)
-  print '<tr><td class="aa">絞り(fstop):<td>%s\n</td></td></tr>' % (fstop)
-  print '<tr><td class="aa">露出(exposure):<td>%s\n</td></td></tr>' % (exposure)
-  print '<tr><td class="aa">レンズ焦点距離(focallength):<td>%s\n</td></td></tr>' % (focallength)
-  print '<tr><td class="aa">フラッシュ(flash):<td>%s\n</td></td></tr>' % (flash)
-  print '<tr><td class="aa">日時(time):<td>%s\n</td></td></tr>' % (time)
-  print '</table></td>'
-  print '</tr>'
-  print '</table>'
+    print '<table align="center">'
+    print '<tr><td><a href="%s" rel="lightbox" title="%s"><img src="%s"/></a></td>' % (photo.content.src,shosaiStr, photo.media.thumbnail[2].url)
+    print '<td><table width="450">'
+    print '<tr><td>%s\n</td></tr>' % (photo.summary.text)
+#   print '<tr><td class="aa">camera:<td>%s\n</td></td></tr>' % (camera)
+    print '<tr><td class="aa">メーカ(make):<td>%s\n</td></td></tr>' % (make)
+    print '<tr><td class="aa">モデル(model):<td>%s\n</td></td></tr>' % (model)
+    print '<tr><td class="aa">ISO:<td>%s\n</td></td></tr>' % (iso)
+    print '<tr><td class="aa">絞り(fstop):<td>%s\n</td></td></tr>' % (fstop)
+    print '<tr><td class="aa">露出(exposure):<td>%s\n</td></td></tr>' % (exposure)
+    print '<tr><td class="aa">レンズ焦点距離(focallength):<td>%s\n</td></td></tr>' % (focallength)
+    print '<tr><td class="aa">フラッシュ(flash):<td>%s\n</td></td></tr>' % (flash)
+    print '<tr><td class="aa">日時(time):<td>%s\n</td></td></tr>' % (time)
+#   print '<tr><td class="aa">GEO:<td>%s\n</td></td></tr>' % (geo)
+    print '</table></td>'
+    print '</tr>'
+    print '</table>'
+
+elif dispType == "view":
+  for photo in  photos.entry:
+    camera="unknown"
+    exposure="unknown"
+    flash="unknown"
+    focallength="unknown"
+    fstop="unknown"
+    iso="unknown"
+    make="unknown"
+    model="unknown"
+    time="unknown"
+    geo="unknown"
+    if photo.exif.make:
+      camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
+    if photo.exif.exposure:
+      exposure = '%s' % (photo.exif.exposure.text)
+    if photo.exif.flash:
+      flash = '%s' % (photo.exif.flash.text)
+    if photo.exif.focallength:
+      focallength = '%s' % (photo.exif.focallength.text)
+    if photo.exif.fstop:
+      fstop = '%s' % (photo.exif.fstop.text)
+    if photo.exif.iso:
+      iso = '%s' % (photo.exif.iso.text)
+    if photo.exif.make:
+      make = '%s' % (photo.exif.make.text)
+    if photo.exif.model:
+      model = '%s' % (photo.exif.model.text)
+    if photo.exif.time:
+      time = '%s' % datetime.date.fromtimestamp(int(photo.exif.time.text)/1000)
+    
+    shosaiStr="<table width=310>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>メーカ:</td><td class='sss'>" + make + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>モデル:</td><td class='sss'>" + model + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>ISO:</td><td class='sss'>" + iso + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>絞り:</td><td class='sss'>" + fstop + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>露出:</td><td class='sss'>" + exposure + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>レンズ焦点距離:</td><td class='sss'>" + focallength + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "<tr>"
+    shosaiStr=shosaiStr + "<td class='ss'>フラッシュ:</td><td class='sss'>" + flash + "</td>"
+    shosaiStr=shosaiStr + "<td class='ss'>日時:</td><td class='sss'>" + time + "</td>"
+    shosaiStr=shosaiStr + "</tr>"
+    shosaiStr=shosaiStr + "</table>"
+    shosaiStr=shosaiStr + "ファイル:" + photo.content.src
+
+    print '<a href="%s" rel="lightbox" title="%s" ><img src="%s"/></a>' % (photo.content.src, shosaiStr,photo.media.thumbnail[1].url)
+
 print '</table>'
 #---------------------------------------------------------------------------------------------
 
